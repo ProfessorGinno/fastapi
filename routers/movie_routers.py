@@ -1,12 +1,15 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from db.models.movie_model import Movie
 from db.schemas.movie_schema import movie_schema, movies_schema
 from db.db_connection import db_connection
 from bson import ObjectId
+# from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 router = APIRouter(prefix="/api",
                    tags=["Movies"],
                    responses={404: {"message": "Movie not found"}})
+
+# oauth2_scheme = OAuth2PasswordBearer("/token")
 
 def find_movie(field: str, key):
     try:
@@ -14,7 +17,19 @@ def find_movie(field: str, key):
         return Movie(**movie_schema(movie))
     except:
         return {"Error": "movie not found"}
-    
+# def get_user(db, username):
+#     pass
+
+# def authenticate_user(db, username, password):
+#     pass
+
+# @router.post("/token")
+# async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+#     return {
+#         "access_token": "Tomatito",
+#         "token_type": "bearer"
+#     }
+
 @router.get("/movies", status_code=200)
 async def get_all_movies():
     return movies_schema(db_connection.movies.find())

@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 from typing import Union
 
-class Movie(BaseModel):
+class User(BaseModel):
     id: Union[str, None] = None
-    name: str
-    genres: list[str]
-    url: str
+    username: str
+    email: str
+    disabled: bool = False
